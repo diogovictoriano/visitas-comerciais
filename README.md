@@ -49,3 +49,11 @@ python -m app.seed
 ```
 
 O comando insere três visitas de exemplo e pode ser repetido sem duplicar esses registos.
+
+## Listar visitas
+
+Para apresentar as visitas registadas, da mais recente para a mais antiga, execute:
+
+```powershell
+python -m app.list_visitas
+```
