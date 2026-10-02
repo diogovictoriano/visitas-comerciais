@@ -39,3 +39,13 @@ Depois de alterar os modelos em `app/models.py`:
 alembic revision --autogenerate -m "descricao da alteracao"
 alembic upgrade head
 ```
+
+## Inserir dados de exemplo
+
+Depois de iniciar a base de dados e aplicar as migrações, execute:
+
+```powershell
+python -m app.seed
+```
+
+O comando insere três visitas de exemplo e pode ser repetido sem duplicar esses registos.
