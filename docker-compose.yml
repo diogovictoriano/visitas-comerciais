@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: visitas-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-visitas}
+      POSTGRES_USER: ${POSTGRES_USER:-visitas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altere-esta-senha}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-visitas} -d ${POSTGRES_DB:-visitas}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-visitas}:${POSTGRES_PASSWORD:-altere-esta-senha}@db:5432/${POSTGRES_DB:-visitas}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["alembic", "upgrade", "head"]
+
+volumes:
+  postgres_data:
